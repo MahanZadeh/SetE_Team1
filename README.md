@@ -6,8 +6,6 @@
 
 ## General Info
 This browser based web application to ...
-	
-This is for practice
 
 
 ## Technologies
