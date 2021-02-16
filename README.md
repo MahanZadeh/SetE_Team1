@@ -47,4 +47,4 @@ Tips for file naming files and folders:
 * use dashes (not underscore) for word separation
 
 
-Test text from Joseph
+Test text from Jesse
