@@ -7,7 +7,8 @@ let profile_data_form = {
     "name": [getElem("profile_name"), getElem("profile_name_large")],
     "email": [getElem("profile_email")],
     "phone": [getElem("profile_phone")],
-    "address": [getElem("profile_address")]
+    "address": [getElem("profile_address")],
+    // "courseIds":[getElem("profile_courses")] 
 };
 
 
@@ -41,5 +42,9 @@ function loadUserProfile(user) {
         })
     })
 }
+
+firebase.auth().onAuthStateChanged(function(user) {
+
+});
 
 loadUserProfile(user);
