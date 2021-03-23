@@ -48,3 +48,5 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 loadUserProfile(user);
+
+
