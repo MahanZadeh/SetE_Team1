@@ -1,5 +1,5 @@
-const SIGN_IN_SUCCESS_PAGE = "./index.html?loginSuccessful";
-const SIGN_UP_SUCCESS_PAGE = "./index.html?signupSuccessful";
+const SIGN_IN_SUCCESS_PAGE = "./profile.html?loginSuccessful";
+const SIGN_UP_SUCCESS_PAGE = "./profile.html?signupSuccessful";
 
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 var uiConfig = {
@@ -20,7 +20,11 @@ var uiConfig = {
             if (authResult.additionalUserInfo.isNewUser) { //if new user
                 db.collection("users").doc(user.uid).set({ //write to firestore
                         name: user.displayName, //"users" collection
-                        email: user.email //with authenticated user's ID (user.uid)
+                        email: user.email, //with authenticated user's ID (user.uid)
+                        links: [],
+                        address: null,
+                        courseIds: [],
+                        phone: null,
                     }).then(function() {
                         console.log("New user added to firestore");
                         window.location.assign(SIGN_UP_SUCCESS_PAGE); //re-direct to main.html after signup
