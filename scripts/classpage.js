@@ -8,15 +8,6 @@ let course_data = {
 };
 
 
-function getElem(id) {
-    return document.getElementById(id);
-}
-
-function setValue(node, text) {
-    node.innerText = text;
-}
-
-
 function getFormInputs() {
     document.getElementById("name_change").addEventListener('click', function () {
         firebase.auth().onAuthStateChanged(function (user) {
