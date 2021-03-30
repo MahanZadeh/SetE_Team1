@@ -1,6 +1,10 @@
-/*
-Notification Model Markup:
+// https://github.com/nizarmah/calendar-javascript-lib
 
-<div class="alert alert-success" role="alert">
-</div>
-*/
+// Implement Calendar functions
+
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        // load data
+    }
+
+});
