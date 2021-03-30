@@ -52,6 +52,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 
+// it doesn't quite work, it needs to update the same collection, not create a new one. 
+
 // to grab and update phone number from the profile page and adding it to the database
 function getFormInputs() {
     document.getElementById("phone_change").addEventListener('click', function () {
