@@ -18,35 +18,39 @@ function setValue(node, text) {
 }
 
 function addAsListOfLinks(user_data, parentNode) {
-    user_data.forEach(function(stringEntry) {
+    user_data.forEach(userLink => {
         let liNode = document.createElement("li");
         let a = document.createElement("a");
         a.href = user_data;
         a.textContent = "A link";
         liNode.className = "";
-        setValue(liNode, stringEntry);
+        setValue(liNode, userLink);
         parentNode.appendChild(liNode);
     });
 
 }
 
 function loadUserProfile(user) {
-    Object.keys(profile_data_form).forEach(function(key) {
-        profile_data_form[key].forEach(function(profile_node) {
-            let user_data = user[key];
+
+    for (let [key, htmlNodeList] of Object.entries(profile_data_form)) {
+        let user_data = user[key];
+        for (let element of htmlNodeList) {
+            // If  an array, we assume `element` is a ul/ol for links.
             if (Array.isArray(user_data)) {
-                addAsListOfLinks(user_data, profile_node);
+                addAsListOfLinks(user_data, element);
             } else {
-                setValue(profile_node, user_data);
+                setValue(element, user_data);
             }
-        })
-    })
+        }
+    };
+
+
 }
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged(user => {
     if (user) {
         db.collection("users").doc(user.uid).get().then(function(user) {
             loadUserProfile(user.data());
-        })
+        });
     }
 });

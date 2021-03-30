@@ -3,7 +3,7 @@ let params = (new URL(document.location)).searchParams;
 function createBootstrapNotification(message) {
     let notificationDiv = document.getElementById("notification_container");
 
-    let setMessage = (notificationHtml) => {
+    let setMessage = notificationHtml => {
         notificationDiv.innerHTML = notificationHtml;
         notificationDiv.querySelector("#notification_text").textContent = message;
     };
