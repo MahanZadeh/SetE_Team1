@@ -12,13 +12,7 @@ function testAll() {
     console.assert(testUtils(toPhoneNumber, "+1(123456-7890", "+1 (123) 456-7890"), "Logic error in toPhoneNumber()");
     console.assert(testUtils(toCapitalCase, "foobar", "Foobar"), "Logic error in toCapitalCase()");
     console.assert(testUtils(toTitleCase, "foo bar", "Foo Bar"), "Logic error in toTitleCase()");
-    console.assert(true, "If true is false, what else is wrong with this world!");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
-    // console.assert(testUtils(testFunc, UserIn, expectedOut), "Logic error in ");
+
 }
 
 function toCapitalCase(word) {
