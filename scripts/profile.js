@@ -5,6 +5,7 @@ let profileDataForm = {
     "email": [getElem("profile_email")],
     "phone": [getElem("profile_phone")],
     "address": [getElem("profile_address")],
+    // "profilePic": [getElem("mypic-goes-here")],
     //"courseIds": [getElem("profile_courses")]
 };
 
@@ -108,6 +109,7 @@ function uploadUserProfilePic() {
     // This is set in your firebase console storage "rules" tab
 
     firebase.auth().onAuthStateChanged(function(user) {
+        if(user) {
         var fileInput = document.getElementById("mypic-input"); // pointer #1
         const image = document.getElementById("mypic-goes-here"); // pointer #2
 
@@ -138,11 +140,30 @@ function uploadUserProfilePic() {
                         })
                 })
         })
+    }})
+}
+
+function displayUserProfilePic() {
+    console.log("hi");
+    firebase.auth().onAuthStateChanged(function (user) {      //get user object
+        db.collection("users").doc(user.uid)                  //use user's uid
+            .get()                                            //READ the doc
+            .then(function (doc) {
+                var picUrl = doc.data().profilePic;           //extract pic url
+
+								// use this line if "mypicdiv" is a "div"
+                //$("#mypicdiv").append("<img src='" + picUrl + "'>")
+                
+								// use this line if "mypic-goes-here" is an "img" 
+								$("#mypic-goes-here").attr("src", picUrl);
+            })
     })
 }
-uploadUserProfilePic();
+displayUserProfilePic();
 
 showUploadedPicture();
+
+uploadUserProfilePic();
 
 
 
