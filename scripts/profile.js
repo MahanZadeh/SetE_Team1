@@ -10,6 +10,16 @@ let profileDataForm = {
 
 let userId = undefined;
 
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        userId = user.uid;
+        db.collection("users").doc(user.uid).get().then(function(user) {
+            loadUserProfile(user.data());
+        });
+    }
+});
+
+
 function getElem(id) {
     return document.getElementById(id);
 }
@@ -51,14 +61,6 @@ function loadUserProfile(user) {
 
 
 }
-firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-        userId = user.uid;
-        db.collection("users").doc(user.uid).get().then(function(user) {
-            loadUserProfile(user.data());
-        });
-    }
-});
 
 
 // it doesn't quite work, it needs to update the same collection, not create a new one. 
