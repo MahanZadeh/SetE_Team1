@@ -17,13 +17,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./styles/index.css">
     <!-- Optional styles and scripts of your own -->
-
+    <!--Modal Library-->
+    <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
 
 
 </head>
 
 <body>
-
     <!-------------------------------------->
     <!-- The following is HTML for layout -->
     <!-------------------------------------->
@@ -49,28 +49,7 @@
     </nav>
 
     <main>
-        <div id="lnb">
-            <div class="lnb-new-schedule">
-                <button id="btn-new-schedule" type="button" class="btn btn-default btn-block lnb-new-schedule-btn" data-toggle="modal">
-                    New schedule</button>
-            </div>
-            <div id="lnb-calendars" class="lnb-calendars">
-                <div>
-                    <div class="lnb-calendars-item">
-                        <label>
-                            <input class="tui-full-calendar-checkbox-square" type="checkbox" value="all" checked>
-                            <span></span>
-                            <strong>View all</strong>
-                        </label>
-                    </div>
-                </div>
-                <div id="calendarList" class="lnb-calendars-d1">
-                </div>
-            </div>
-            <div class="lnb-footer">
-                © NHN Corp.
-            </div>
-        </div>
+
         <div id="right">
             <div id="menu">
                 <span class="dropdown">
@@ -91,21 +70,7 @@
                             <i class="calendar-icon ic_view_week"></i>Weekly
                         </a>
                     </li>
-                    <!-- <li role="presentation">
-                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-monthly">
-                            <i class="calendar-icon ic_view_month"></i>Month
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks2">
-                            <i class="calendar-icon ic_view_week"></i>2 weeks
-                        </a>
-                    </li>
-                    <li role="presentation">
-                        <a class="dropdown-menu-title" role="menuitem" data-action="toggle-weeks3">
-                            <i class="calendar-icon ic_view_week"></i>3 weeks
-                        </a>
-                    </li> -->
+
                     <li role="presentation" class="dropdown-divider"></li>
                     <li role="presentation">
                         <a role="menuitem" data-action="toggle-workweek">
@@ -147,6 +112,45 @@
             EduCal
         </div>
     </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="schedule_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Schedule Editor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+                </div>
+                <div class="modal-body">
+                    <form class="popup_form" id="shedule_form">
+                        <label>Event Title</label>
+                        <input type="text" placeholder="Enter event name" id="title" />
+                        <label>Class Link</label>
+                        <input type="text" placeholder="Enter class link for assignment" id="class_link" />
+                        <label>Start date</label>
+                        <div class="tui-datepicker-input tui-datetime-start tui-has-focus" id="start_date">
+                            <input type="text" id="datepicker-start" aria-label="Date-Time">
+                            <span class="tui-ico-date"></span>
+                        </div>
+                        <label>End date</label>
+                        <div id="start_wrapper" style="margin-top: -1px;"></div>
+                        <div class="tui-datepicker-input tui-datetime-end tui-has-focus" id="end_date">
+                            <input type="text" id="datepicker-end" aria-label="Date-Time">
+                            <span class="tui-ico-date"></span>
+                        </div>
+                        <div id="end_wrapper" style="margin-top: -1px;"></div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" id="modal_delete">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="modal_save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!--------------------------------------------------------------------->
     <!-- JS files: Your own JavaScript functions included here    -->
@@ -161,22 +165,27 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
     <script src="scripts/firebase_api_educal.js"></script>
 
 
+    <script src="https://chancejs.com/chance.js"></script>
     <!--Calendar lib js-->
     <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
     <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
     <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
     <script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
 
-
     <script src="scripts/moment.js"></script>
     <script defer src="scripts/index.js"></script>
 
 
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+      </button> -->
 
 
 </body>
