@@ -4,6 +4,14 @@ body {
     min-height: 100vh;
 }
 
+.bg-dark {
+    background-color: #374981 !important;
+}
+
+.navbar {
+    
+}
+
 .main-widget {
     display: flex;
     justify-content: center;
