@@ -19,6 +19,8 @@ let userSchedules;
  *   Default info used for the calendar, in future each user will be able to modify their own version of this template,
  *   due to time constraint, each user will instead store this information in the cloud, so in future user's can have customized colors for each
  *   event on the calendar.
+ * 
+ *  This is also for the designer to customize the calendar.
  */
 const CALENDAR_INFO = new(function() {
     this.id = "";
@@ -91,6 +93,7 @@ const calendar = (function(window, Calendar) {
             time: function(schedule) {
                 return getTimeTemplate(schedule);
             },
+
         },
     });
 
@@ -234,7 +237,6 @@ const calendar = (function(window, Calendar) {
         }
 
         setRenderRangeText();
-        loadUserSchedules();
     }
 
 
