@@ -5,10 +5,10 @@ EXPECTED HTML IDS:
 #schedule_modal
 
 in schedule_modal:
-    title: input for text,
-    class_link: input for text,
-    start_date: tui.DatePicker,
-    end_date: tui.DatePicker
+    #title: input for text,
+    #class_link: input for text,
+    #start_date: tui.DatePicker,
+    #end_date: tui.DatePicker
 
 */
 
@@ -69,7 +69,6 @@ function updateScheduleChanges(scheduleId, changes) {
     if (changes.start) {
         changes.start = firebase.firestore.Timestamp.fromDate(changes.start);
     }
-    console.log(changes);
 
     db.collection('userSchedules').doc(scheduleId).update(changes);
 }
@@ -100,9 +99,9 @@ const calendar = (function(window, Calendar) {
         clickMore: function(e) {
             console.log("clickMore", e);
         },
-        clickSchedule: function(e) {
-            currentScheduleId = e.schedule.id;
-            popupScheduleEdit(e.schedule, true);
+        clickSchedule: function(event) {
+            currentScheduleId = event.schedule.id;
+            popupScheduleEdit(event.schedule, true);
         },
         clickDayname: function(date) {
             console.log("clickDayname", date);
@@ -110,9 +109,9 @@ const calendar = (function(window, Calendar) {
         beforeCreateSchedule: function(event) {
             popupScheduleEdit(event);
         },
-        beforeUpdateSchedule: function(e) {
-            var schedule = e.schedule;
-            var changes = e.changes;
+        beforeUpdateSchedule: function(event) {
+            var schedule = event.schedule;
+            var changes = event.changes;
             cal.updateSchedule(schedule.id, schedule.calendarId, changes);
             updateScheduleChanges(schedule.id, changes);
             refreshScheduleVisibility();
@@ -150,10 +149,7 @@ const calendar = (function(window, Calendar) {
         var html = [];
 
         html.push("<strong>" + start + "</strong> ");
-
-
         html.push(`<a href="${schedule.raw.class_link}">${schedule.title}</a>`);
-
 
         return html.join("");
     }
@@ -425,7 +421,6 @@ const calendar = (function(window, Calendar) {
             const parsedData = getScheduleModalData();
 
             if (saveButton.getAttribute("isUpdate") === "true") {
-                console.log("Changes= ", parsedData);
                 cal.updateSchedule(currentScheduleId, "calendar", parsedData);
                 updateScheduleChanges(currentScheduleId, parsedData);
             } else { addNewSchedule(parsedData); }
@@ -462,12 +457,10 @@ const calendar = (function(window, Calendar) {
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-
         userId = user.uid;
         // load data
         userSchedules = db.collection("userSchedules").where("userId", "==", userId).get().then(schedules => {
             window.cal.loadUserSchedules(schedules.docs.map(scheduleDoc => {
-                console.log(scheduleDoc);
                 let data = scheduleDoc.data();
                 data.id = scheduleDoc.id;
                 return data;
