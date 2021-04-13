@@ -24,9 +24,9 @@ const CALENDAR_INFO = new(function() {
     this.id = "";
     this.name = "Educal Calendar";
     this.color = "#ffffff";
-    this.bgColor = "#9e5fff";
+    this.bgColor = "#0A8754";
     this.dragBgColor = "#9e5fff";
-    this.borderColor = "#9e5fff";
+    this.borderColor = "#004F2D";
 })();
 
 /** Creates date objects for the start and end date in the schedule modal
