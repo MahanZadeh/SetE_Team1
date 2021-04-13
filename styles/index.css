@@ -12,6 +12,10 @@ body {
     color: #B3B3BC !important;
 }
 
+a {
+    color: #B3B3BC !important;
+}
+
 .main-widget {
     display: flex;
     justify-content: center;

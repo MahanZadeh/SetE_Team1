@@ -1,5 +1,4 @@
 "use strict";
-
 /*
 
 EXPECTED HTML IDS:
@@ -70,6 +69,7 @@ function updateScheduleChanges(scheduleId, changes) {
     if (changes.start) {
         changes.start = firebase.firestore.Timestamp.fromDate(changes.start);
     }
+    console.log(changes);
 
     db.collection('userSchedules').doc(scheduleId).update(changes);
 }
@@ -102,7 +102,7 @@ const calendar = (function(window, Calendar) {
         },
         clickSchedule: function(e) {
             currentScheduleId = e.schedule.id;
-            popupScheduleEdit(e.schedule);
+            popupScheduleEdit(e.schedule, true);
         },
         clickDayname: function(date) {
             console.log("clickDayname", date);
@@ -258,8 +258,6 @@ const calendar = (function(window, Calendar) {
     function makeScheduleModalVisible(show) {
         let schedulePopup = $("#schedule_modal");
         schedulePopup.modal(show ? "show" : "hide");
-
-
     }
 
     function loadScheduleIntoModal(schedule) {
@@ -276,7 +274,11 @@ const calendar = (function(window, Calendar) {
      *
      * @param {Schedule} schedule
      */
-    function popupScheduleEdit(newScheduleEvent) {
+    function popupScheduleEdit(newScheduleEvent, isUpdate = false) {
+        // Update the save button for the schedule modal to match the isUpdate boolean.
+        // this is done because the save functionality can use isUpdate to determine what kind of write to 
+        // firebase we are comitting. 
+        $('#modal_save').attr("isUpdate", isUpdate.toString());
         // Clear shedule edit form
         $("#shedule_form")[0].reset();
         loadScheduleIntoModal(newScheduleEvent);
@@ -300,7 +302,6 @@ const calendar = (function(window, Calendar) {
         });
 
         makeScheduleModalVisible(false);
-        refreshScheduleVisibility();
     }
 
     function refreshScheduleVisibility() {
@@ -419,14 +420,24 @@ const calendar = (function(window, Calendar) {
     function setEventListener() {
         $("#menu-navi").on("click", onClickNavi);
         $('.dropdown-menu a[role="menuitem"]').on("click", onClickMenu);
-        $("#modal_save").on("click", _ => {
-            addNewSchedule(getScheduleModalData());
+        $("#modal_save").on("click", event => {
+            const saveButton = event.target;
+            const parsedData = getScheduleModalData();
+
+            if (saveButton.getAttribute("isUpdate") === "true") {
+                console.log("Changes= ", parsedData);
+                cal.updateSchedule(currentScheduleId, "calendar", parsedData);
+                updateScheduleChanges(currentScheduleId, parsedData);
+            } else { addNewSchedule(parsedData); }
+
+            makeScheduleModalVisible(false);
         });
         $('#modal_delete').on('click', _ => {
             deleteSchedule(currentScheduleId);
         })
-
         window.addEventListener("resize", resizeThrottled);
+
+        refreshScheduleVisibility();
     }
 
     function getDataAction(target) {
