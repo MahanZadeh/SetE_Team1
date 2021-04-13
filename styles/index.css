@@ -4,15 +4,36 @@ body {
     min-height: 100vh;
 }
 
+
+/* all days */
+
+.tui-full-calendar-dayname {}
+
+
+/*Today's dayname*/
+
+.tui-full-calendar-dayname.tui-full-calendar-today {
+    color: black;
+}
+
+
+/*yesterday's dayname*/
+
+.tui-full-calendar-dayname.tui-full-calendar-holiday-sun>span {
+    /* Yo Joe, !important is required to overwrite the external inline-style that get's added to this span, so keep it */
+    color: red !important;
+}
+
 .bg-dark {
     background-color: #374981 !important;
 }
 
-.menu > a {
+.menu>a {
     color: #B3B3BC !important;
 }
 
-.nav a, .nav-link {
+.nav a,
+.nav-link {
     color: #e3e3ec !important;
 }
 
