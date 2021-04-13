@@ -32,6 +32,10 @@ body {
     color: #B3B3BC !important;
 }
 
+#calendar a {
+    color: #eeeeee !important;
+}
+
 .nav a,
 .nav-link {
     color: #e3e3ec !important;
