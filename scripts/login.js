@@ -25,6 +25,7 @@ var uiConfig = {
                         address: null,
                         courseIds: [],
                         phone: null,
+                        schedules: [],
                     }).then(function() {
                         console.log("New user added to firestore");
                         window.location.assign(SIGN_UP_SUCCESS_PAGE); //re-direct to main.html after signup
