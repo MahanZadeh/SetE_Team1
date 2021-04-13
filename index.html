@@ -16,6 +16,8 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./styles/index.css">
+
+
     <!-- Optional styles and scripts of your own -->
     <!--Modal Library-->
     <script src="https://cdn.jsdelivr.net/npm/micromodal/dist/micromodal.min.js"></script>
@@ -39,7 +41,7 @@
                     <a class="nav-link" href="./profile.html" target="_self">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./login.html">Login / Signup</a>
+                    <a class="nav-link" href="./login.html" id="signin-signout">Login / Signup</a>
                 </li>
             </ul>
         </div>
@@ -52,7 +54,7 @@
                     <button id="dropdownMenu-calendarType" class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="true">
                         <i id="calendarTypeIcon" class="calendar-icon ic_view_month" style="margin-right: 4px;"></i>
-                        <span id="calendarTypeName">Dropdown</span>&nbsp;
+                        <span id="calendarTypeName">Weekly</span>&nbsp;
                 <i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu-calendarType">
@@ -166,6 +168,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
     <script src="scripts/firebase_api_educal.js"></script>
+    <script src="scripts/signout.js"></script>
 
 
     <script src="https://chancejs.com/chance.js"></script>
