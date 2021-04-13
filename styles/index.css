@@ -8,12 +8,12 @@ body {
     background-color: #374981 !important;
 }
 
-.nav-link {
+.menu > a {
     color: #B3B3BC !important;
 }
 
-a {
-    color: #B3B3BC !important;
+.nav a, .nav-link {
+    color: #e3e3ec !important;
 }
 
 .main-widget {
