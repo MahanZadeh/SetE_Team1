@@ -1,3 +1,4 @@
+var userId = undefined;
 // `user` should have matching keys to `profile_data_form`
 let profileDataForm = {
     "links": [getElem("profile_links")],
@@ -8,16 +9,8 @@ let profileDataForm = {
     // "profilePic": [getElem("mypic-goes-here")],
 };
 
-let userId = undefined;
 
-firebase.auth().onAuthStateChanged(user => {
-    if (user) {
-        userId = user.uid;
-        db.collection("users").doc(user.uid).get().then(function(user) {
-            loadUserProfile(user.data());
-        });
-    }
-});
+
 
 
 function getElem(id) {
@@ -46,7 +39,6 @@ function addAsListOfLinks(user_data, parentNode) {
 }
 
 function loadUserProfile(user) {
-
     for (let [key, htmlNodeList] of Object.entries(profileDataForm)) {
         let user_data = user[key];
         for (let element of htmlNodeList) {
@@ -59,7 +51,8 @@ function loadUserProfile(user) {
         }
     };
 
-
+    // Now load profile picture
+    $("#mypic-goes-here").attr("src", user.profilePic);
 }
 
 
@@ -67,11 +60,9 @@ function loadUserProfile(user) {
 
 // to grab and update phone number from the profile page and adding it to the database
 function addInputListener(key, profileInput) {
-    console.log(profileInput);
     profileInput.addEventListener('blur', event => {
         let inputField = event.currentTarget;
         let data = {};
-        console.log("adding value " + inputField.value);
         data[key] = inputField.value;
 
         db.collection("users").doc(userId).update(data).then(_ => console.log('added!')).catch(err => console.log(err));
@@ -81,22 +72,17 @@ function addInputListener(key, profileInput) {
 function addEventListenersForInputs() {
     for (let [key, listOfElements] of Object.entries(profileDataForm)) {
         for (let htmlElement of listOfElements) {
-            console.log(htmlElement.tagName);
             if (htmlElement.tagName === "INPUT") {
                 addInputListener(key, htmlElement);
             }
-
         }
-
-
-        // open up liveshare chat on the side "session chat" in chat channels
     }
-
+    showUploadedPictureListener();
 }
 
 
 // Render the image that was chosen
-function showUploadedPicture() {
+function showUploadedPictureListener() {
     const fileInput = document.getElementById("mypic-input"); // pointer #1
     const image = document.getElementById("mypic-goes-here"); // pointer #2
     fileInput.addEventListener('change', function(e) { //event listener
@@ -105,70 +91,54 @@ function showUploadedPicture() {
     })
 }
 
-function uploadUserProfilePic() {
+function uploadProfilePicListener(userUid) {
     // Let's assume my storage is only enabled for authenticated users 
     // This is set in your firebase console storage "rules" tab
+    if (!userUid) { console.err("Not logged in!"); return };
 
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            var fileInput = document.getElementById("mypic-input"); // pointer #1
-            const image = document.getElementById("mypic-goes-here"); // pointer #2
+    var fileInput = document.getElementById("mypic-input"); // pointer #1
+    const image = document.getElementById("mypic-goes-here"); // pointer #2
 
-            // listen for file selection
-            fileInput.addEventListener('change', function(e) {
-                var file = e.target.files[0];
-                var blob = URL.createObjectURL(file);
-                image.src = blob; // display this image
+    // listen for file selection
+    fileInput.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        var blob = URL.createObjectURL(file);
+        image.src = blob; // display this image
 
-                //store using this name
-                var storageRef = storage.ref("images/" + user.uid + ".jpg");
+        //store using this name
+        var storageRef = storage.ref("images/" + userUid + ".jpg");
 
-                //upload the picked file
-                storageRef.put(file)
+        //upload the picked file
+        storageRef.put(file)
+            .then(function() {
+                console.log('Uploaded to Cloud Storage.');
+            });
+
+        //get the URL of stored file
+        storageRef.getDownloadURL()
+            .then(function(url) { // Get URL of the uploaded file
+                console.log(url); // Save the URL into users collection
+                db.collection("users").doc(userUid).update({
+                        "profilePic": url
+                    })
                     .then(function() {
-                        console.log('Uploaded to Cloud Storage.');
+                        console.log('Added Profile Pic URL to Firestore.');
                     })
+            });
+    });
 
-                //get the URL of stored file
-                storageRef.getDownloadURL()
-                    .then(function(url) { // Get URL of the uploaded file
-                        console.log(url); // Save the URL into users collection
-                        db.collection("users").doc(user.uid).update({
-                                "profilePic": url
-                            })
-                            .then(function() {
-                                console.log('Added Profile Pic URL to Firestore.');
-                            })
-                    })
-            })
-        }
-    })
 }
 
-function displayUserProfilePic() {
-    console.log("hi");
-    firebase.auth().onAuthStateChanged(function(user) { //get user object
-        db.collection("users").doc(user.uid) //use user's uid
-            .get() //READ the doc
-            .then(function(doc) {
-                var picUrl = doc.data().profilePic; //extract pic url
-
-                // use this line if "mypicdiv" is a "div"
-                //$("#mypicdiv").append("<img src='" + picUrl + "'>")
-
-                // use this line if "mypic-goes-here" is an "img" 
-                $("#mypic-goes-here").attr("src", picUrl);
-            })
-    })
-}
-displayUserProfilePic();
-
-showUploadedPicture();
-
-uploadUserProfilePic();
-
-
-
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        userId = user.uid;
+        db.collection("users").doc(user.uid).get().then(function(user) {
+            let userData = user.data();
+            uploadProfilePicListener(userId);
+            loadUserProfile(userData);
+        });
+    }
+});
 
 
 addEventListenersForInputs();
