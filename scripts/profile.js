@@ -20,7 +20,11 @@ let profileDataForm = {
 function getElem(id) {
     return document.getElementById(id);
 }
-
+/**Determines way of setting value to input or default tag.
+ * 
+ * @param {HTMLElement} node - input field
+ * @param {string} text - text to fill inside tag or value of input
+ */
 function setValue(node, text) {
     if (node.tagName === "INPUT") {
         node.value = text;

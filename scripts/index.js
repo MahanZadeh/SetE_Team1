@@ -248,7 +248,10 @@ const calendar = (function(window, Calendar) {
         setRenderRangeText();
     }
 
-
+    /**Parse the values from schedule editor.
+     * 
+     * @returns {Object} of schedule data
+     */
     function getScheduleModalData() {
         return {
             title: $("#title").val(),
@@ -267,7 +270,10 @@ const calendar = (function(window, Calendar) {
         let schedulePopup = $("#schedule_modal");
         schedulePopup.modal(show ? "show" : "hide");
     }
-
+    /**Loads Schedule into editor Modal.
+     * 
+     * @param {ScheduleObject} schedule - tui.Calendar ScheduleObject
+     */
     function loadScheduleIntoModal(schedule) {
         if (schedule.title)
             $('#title').val(schedule.title);
@@ -399,7 +405,10 @@ const calendar = (function(window, Calendar) {
             state: scheduleData.state,
         };
     }
-
+    /**Deletes calendar from calendar and firebase.
+     * 
+     * @param {*} scheduleId 
+     */
     function deleteSchedule(scheduleId) {
         if (scheduleId) {
 
@@ -410,22 +419,28 @@ const calendar = (function(window, Calendar) {
             makeScheduleModalVisible(false);
         }
     }
-    //TODO: Load user data
+    /**Load user data to the schedule
+     * 
+     * @param {*} userSchedules 
+     * @returns 
+     */
     cal.loadUserSchedules = function(userSchedules) {
-        // early-return if no schedule data.
-        if (!userSchedules) return;
-        let schedules = [];
-        userSchedules.forEach(schedule => {
-            // Convert from firebase timestamps to date object.
-            schedule.start = schedule.start.toDate();
-            schedule.end = schedule.end.toDate();
-            schedules.push(makeScheduleObject(schedule.id, schedule));
-        });
-        cal.createSchedules(schedules);
-        refreshScheduleVisibility();
-    }
-
-    function setEventListener() {
+            // early-return if no schedule data.
+            if (!userSchedules) return;
+            let schedules = [];
+            userSchedules.forEach(schedule => {
+                // Convert from firebase timestamps to date object.
+                schedule.start = schedule.start.toDate();
+                schedule.end = schedule.end.toDate();
+                schedules.push(makeScheduleObject(schedule.id, schedule));
+            });
+            cal.createSchedules(schedules);
+            refreshScheduleVisibility();
+        }
+        /**Adds event listener to read/write buttons, and other calendar functionality.
+         * 
+         */
+    function setEventListeners() {
         $("#menu-navi").on("click", onClickNavi);
         $('.dropdown-menu a[role="menuitem"]').on("click", onClickMenu);
         $("#modal_save").on("click", event => {
@@ -462,7 +477,7 @@ const calendar = (function(window, Calendar) {
     window.cal = cal;
 
     setRenderRangeText();
-    setEventListener();
+    setEventListeners();
     //
 })(window, tui.Calendar);
 
