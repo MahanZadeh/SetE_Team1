@@ -49,7 +49,12 @@ const [START_DATE_PICKER, END_DATE_PICKER] = (() => {
 
     return [startPicker, endPicker];
 })();
-
+/**
+ * 
+ * @param {string} scheduleId - Id of the ScheduleObject
+ * @param {Object} schedule - ScheduleObjects data
+ *
+ */
 function saveScheduleToFirebase(scheduleId, schedule) {
     if (!userId) return;
 
@@ -59,9 +64,9 @@ function saveScheduleToFirebase(scheduleId, schedule) {
     });
 
 }
-/**Updates firebase for new schedule location.
+/**Updates firebase of new schedule data.
  * 
- * @param {*} changes 
+ * @param {Object} changes - new schedule data to update
  */
 function updateScheduleChanges(scheduleId, changes) {
 
@@ -75,7 +80,7 @@ function updateScheduleChanges(scheduleId, changes) {
     db.collection('userSchedules').doc(scheduleId).update(changes);
 }
 
-/**Instantiate `tui.Calendar` objec to `window`.
+/**Instantiate `tui.Calendar` object to `window`.
  
 Everything and anything to do with the calendar's client-side functionality, 
 this includes creating the calendar, and it's controller (all associated functions)
@@ -141,18 +146,22 @@ const calendar = (function(window, Calendar) {
         },
     });
 
-    // Controller functions //
+    /*Controller functions for the calendar,
+     * All the functions in the following here are controller methods, which       
+     * serve the functionality of the calendar
+     */
+
     /**
      * Get time template for time 
      * @param {Schedule} schedule - schedule
-     * @returns {string}
+     * @returns {string} - html for each schedule object
      */
     function getTimeTemplate(schedule) {
         var start = moment(schedule.start.toUTCString()).format("HH:mm a");
         var html = [];
 
         html.push("<strong>" + start + "</strong> ");
-        html.push(`<a href="${schedule.raw.class_link}">${schedule.title}</a>`);
+        html.push(`<a href="${schedule.raw.class_link}" class="schedule_title">${schedule.title}</a>`);
 
         return html.join("");
     }
@@ -251,6 +260,7 @@ const calendar = (function(window, Calendar) {
 
     /**
      * Show or Hide shedule-editor modal
+     * 
      * @param {boolean} show - boolean indicating whether to show or hide the modal
      */
     function makeScheduleModalVisible(show) {
@@ -456,7 +466,7 @@ const calendar = (function(window, Calendar) {
     //
 })(window, tui.Calendar);
 
-
+// Load all of the users data to the calendar.
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         userId = user.uid;

@@ -1,6 +1,11 @@
-/* 
- * file:input_utils.js
+/**This module is unimplemented.  
+ * 
+ *   file:input_utils.js
  * contains utility functions for handling and converting input
+ * 
+ * 
+ * 
+ * 
  */
 
 function testUtils(testFunc, UserIn, expectedOut) {
@@ -8,11 +13,9 @@ function testUtils(testFunc, UserIn, expectedOut) {
 }
 
 function testAll() {
-    // Crashes if not equal.
     console.assert(testUtils(toPhoneNumber, "+1(123456-7890", "+1 (123) 456-7890"), "Logic error in toPhoneNumber()");
     console.assert(testUtils(toCapitalCase, "foobar", "Foobar"), "Logic error in toCapitalCase()");
     console.assert(testUtils(toTitleCase, "foo bar", "Foo Bar"), "Logic error in toTitleCase()");
-
 }
 
 function toCapitalCase(word) {

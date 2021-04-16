@@ -12,7 +12,11 @@ let profileDataForm = {
 
 
 
-
+/**
+ * Show or Hide shedule-editor modal
+ * 
+ * @param {boolean} show - boolean indicating whether to show or hide the modal
+ */
 function getElem(id) {
     return document.getElementById(id);
 }
@@ -56,9 +60,11 @@ function loadUserProfile(user) {
 }
 
 
-// it doesn't quite work, it needs to update the same collection, not create a new one. 
-
-// to grab and update phone number from the profile page and adding it to the database
+/**Adds blur event to input, checking when to save input data to firebase.
+ * 
+ * @param {string} key - Expected keys are from the profileDataForm
+ * @param {HTMLInputElement} profileInput 
+ */
 function addInputListener(key, profileInput) {
     profileInput.addEventListener('blur', event => {
         let inputField = event.currentTarget;
@@ -68,7 +74,10 @@ function addInputListener(key, profileInput) {
         db.collection("users").doc(userId).update(data).then(_ => console.log('added!')).catch(err => console.log(err));
     });
 }
-
+/**Add event listeners for all input fields.
+ * 
+ * adds a input listener for each input field on the profile page
+ */
 function addEventListenersForInputs() {
     for (let [key, listOfElements] of Object.entries(profileDataForm)) {
         for (let htmlElement of listOfElements) {
@@ -91,8 +100,12 @@ function showUploadedPictureListener() {
     })
 }
 
+/**Upload new selected image to firebase.
+ * 
+ * @param {string} userUid - Unique ID to firebase user.
+ */
 function uploadProfilePicListener(userUid) {
-    // Let's assume my storage is only enabled for authenticated users 
+    // Let's assume my storage is only enabld for authenticated users 
     // This is set in your firebase console storage "rules" tab
     if (!userUid) { console.err("Not logged in!"); return };
 
@@ -129,6 +142,8 @@ function uploadProfilePicListener(userUid) {
 
 }
 
+
+// Load user's data
 firebase.auth().onAuthStateChanged(user => {
     if (user) {
         userId = user.uid;
